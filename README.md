@@ -4,4 +4,4 @@ Depois de ter isso criado só precisa criar um .env na pasta
 
 para instalar as dependências do projeto, baixe o arquivo "requirements.txt" e use o comando
 
-pip install -r requirements.txt
+**pip install -r requirements.txt**
