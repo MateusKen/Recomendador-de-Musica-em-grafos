@@ -7,29 +7,52 @@ NOME: Thiago Shihan Cardoso Toma
 RA: 10400764
 """
 
-import csv
+class Vertice:
+    """Classe base para vértices."""
+    def __init__(self, id):
+        self.id = id  # Identificador único do vértice
 
-class Grafo:
-    def __init__(self, n):
-        self.V = n  # Número de vértices
-        self.adj = [[] for _ in range(n)]  # Lista de adjacência
-        self.musicas = {}  # Dicionário para armazenar as músicas
+    def __str__(self):
+        return f"Vértice {self.id}"
 
+
+class Usuario(Vertice):
+    """Classe para vértices do tipo Usuário."""
+    def __init__(self, id, nome):
+        super().__init__(id)
+        self.nome = nome
+
+    def __str__(self):
+        return f"Usuário: {self.nome}"
+
+
+class Musica(Vertice):
+    """Classe para vértices do tipo Música."""
+    def __init__(self, id, nome, genero):
+        super().__init__(id)
+        self.nome = nome
+        self.genero = genero
+
+    def __str__(self):
+        return f"Música: {self.nome} (Gênero: {self.genero})"
     
+class Grafo:
+    def __init__(self):
+        self.adj = {}  # Dicionário de listas de adjacência
+
+    def adiciona_vertice(self, id):
+        if id not in self.adj:
+            self.adj[id] = []
 
     def insereA(self, v, w):
-        self.adj[v].append(w)  # Insere aresta de v para w
+        if v in self.adj and w in self.adj:
+            self.adj[v].append(w)
 
     def removeA(self, v, w):
-        self.adj[v].remove(w)
-
-    def set_musica(self, v, musica):
-        self.musicas[v] = musica  # Associa música ao vértice v
+        if v in self.adj and w in self.adj[v]:
+            self.adj[v].remove(w)
 
     def show(self):
-        for v in range(self.V):
-            # Recupera a música associada ao vértice v, se existir
-            musica = self.musicas.get(v, "Nenhuma música")
-            # Formata a string para mostrar a conexão
-            conexoes = ' -> '.join(f"{self.musicas.get(w, 'Nenhuma música')}" for w in self.adj[v])
-            print(f"Vértice {v} ({musica}): {conexoes if conexoes else 'Sem conexões'}")
+        for v, conexoes in self.adj.items():
+            conexoes_str = ', '.join(map(str, conexoes))
+            print(f"Vértice {v}: {conexoes_str if conexoes else 'Sem conexões'}")
