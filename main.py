@@ -7,15 +7,15 @@ NOME: Thiago Shihan Cardoso Toma
 RA: 10400764
 """
 import csv
-import pandas as pd
 from collections import Counter
 
 from importarMusica import buscar_info_artista_por_musica
-from grafoLista import Grafo
+
+from grafoLista import *
 
 import pandas as pd
 
-def ler_csv(arquivo):
+def ler_forms(arquivo):
     # Carregar o CSV
     df = pd.read_csv(arquivo, delimiter=",")  # Certifique-se de colocar o caminho correto do arquivo
 
@@ -182,6 +182,6 @@ def menu():
         else:
             print("Opção inválida.")
 
-ler_csv("forms.csv")
+ler_forms("forms.csv")
 print("FOI!")
 #menu()
