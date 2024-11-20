@@ -52,6 +52,35 @@ class Grafo:
         if v in self.adj and w in self.adj[v]:
             self.adj[v].remove(w)
 
+    def eh_conexo(self):
+        """
+        Verifica se o grafo é conexo (todos os vértices são alcançáveis a partir de qualquer vértice).
+        
+        Returns:
+        bool: True se o grafo for conexo, False caso contrário
+        """
+        if not self.adj:
+            return False
+        
+        # Escolhe um vértice inicial para iniciar a busca
+        inicio = list(self.adj.keys())[0]
+        
+        # Conjunto para rastrear vértices visitados
+        visitados = set()
+        
+        def dfs(vertice):
+            """Busca em profundidade para marcar vértices alcançáveis"""
+            visitados.add(vertice)
+            for vizinho in self.adj[vertice]:
+                if vizinho not in visitados:
+                    dfs(vizinho)
+        
+        # Realiza DFS a partir do vértice inicial
+        dfs(inicio)
+        
+        # Verifica se todos os vértices foram visitados
+        return len(visitados) == len(self.adj)
+
     def show(self):
         for v, conexoes in self.adj.items():
             conexoes_str = ', '.join(map(str, conexoes))
