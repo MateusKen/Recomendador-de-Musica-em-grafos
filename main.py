@@ -111,7 +111,8 @@ def menu():
         print("f. Remover aresta")
         print("g. Mostrar conteúdo do arquivo")
         print("h. Mostrar grafo")
-        print("i. Sair")
+        print("i. Verificar conectividade do grafo")
+        print("j. Sair")
 
         opcao = input("\nEscolha uma opção: ")
         if opcao == "a":
@@ -176,8 +177,16 @@ def menu():
                 grafo.show()
             else:
                 print("Grafo não carregado.")
-
         elif opcao == "i":
+            if grafo:
+                if grafo.eh_conexo():
+                    print("O grafo é conexo.")
+                else:
+                    print("O grafo NÃO é conexo.")
+            else:
+                print("Grafo não carregado.")
+
+        elif opcao == "j":
             break
         else:
             print("Opção inválida.")
