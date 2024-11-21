@@ -13,7 +13,7 @@ Este é um projeto desenvolvido para a disciplina de Teoria dos Grafos com o obj
 
 📝 **Descrição do Projeto**
 
-O sistema utiliza um grafo bipartido que conecta usuários a músicas com base em interações ou preferências. A partir da análise das conexões existentes, o algoritmo recomenda músicas novas para os usuários, priorizando aquelas que possuem maior similaridade com seus gostos.
+O sistema utiliza um grafo  que conecta usuários a músicas com base em interações ou preferências. A partir da análise das conexões existentes, o algoritmo recomenda músicas novas para os usuários, priorizando aquelas que possuem maior similaridade com seus gostos.
 
 🚀 **Funcionalidades**
 
