@@ -27,7 +27,18 @@ O sistema utiliza um grafo bipartido que conecta usuários a músicas com base e
 🛠️ **Tecnologias Utilizadas**
 
 	•	Linguagem de programação: Python
-	•	Estrutura de dados: Grafo bipartido (representado por listas de adjacência adjacência)
+	•	Estrutura de dados: Grafo (representado por listas de adjacência adjacência)	
+	•	Bibliotecas (Python):
+		-	Spotipy: biblioteca do python especializada para realizar as chamadas na API do Spotify
+		-	Pandas: biblioteca python para criar dataframes, utilizada nesse projeto para exportar as respostas do formulário, manipular os dados e criar o csv do projeto
+		-	csv: biblioteca python para manipulação de arquivos csv
+		-	collections: biblioteca nativa python com funções prontas
+		-	os: biblioteca python que realiza syscalls
+		-	dotenv: biblioteca python para usar arquivos .env
+  
+	•	Spotify API: para fazer chamadas e buscar informações sobre as músicas
+	•	CSV: tipo de arquivo que vai ser usado para armazenar os dados do projeto
+
 
 
 
