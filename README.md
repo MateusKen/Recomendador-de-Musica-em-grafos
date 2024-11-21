@@ -7,15 +7,15 @@ RA: 10400995
 NOME: Thiago Shihan Cardoso Toma
 RA: 10400764
 
-🎵 Recomendador de Músicas com Grafo Bipartido 🎶
+🎵 ##Recomendador de Músicas com Grafo Bipartido 🎶
 
 Este é um projeto desenvolvido para a disciplina de Teoria dos Grafos com o objetivo de explorar a utilização de grafos na criação de um sistema de recomendação de músicas.
 
-📝 Descrição do Projeto
+📝 ##Descrição do Projeto
 
 O sistema utiliza um grafo bipartido que conecta usuários a músicas com base em interações ou preferências. A partir da análise das conexões existentes, o algoritmo recomenda músicas novas para os usuários, priorizando aquelas que possuem maior similaridade com seus gostos.
 
-🚀 Funcionalidades
+🚀 ##Funcionalidades
 
 	•	Inserção de dados: Adicionar novos usuários e músicas ao grafo.
 	•	Recomendações personalizadas: Geração de recomendações com base nas conexões do grafo.
@@ -24,7 +24,7 @@ O sistema utiliza um grafo bipartido que conecta usuários a músicas com base e
  	•	Verificação de conexidade do grafo.
   
 
-🛠️ Tecnologias Utilizadas
+🛠️ ##Tecnologias Utilizadas
 
 	•	Linguagem de programação: Python
 	•	Estrutura de dados: Grafo bipartido (representado por listas de adjacência adjacência)
