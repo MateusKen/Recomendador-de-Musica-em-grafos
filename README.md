@@ -19,7 +19,7 @@ O sistema utiliza um grafo bipartido que conecta usuários a músicas com base e
 	•	Recomendações personalizadas: Geração de recomendações com base nas conexões do grafo.
 	•	Visualização do grafo: Exibição das relações usuário-música em formato gráfico ou textual.
 	•	Leitura de grafo a partir de arquivo csv.
-  •	Verificação de conexidade do grafo.
+ 	•	Verificação de conexidade do grafo.
   
 
 🛠️ Tecnologias Utilizadas
