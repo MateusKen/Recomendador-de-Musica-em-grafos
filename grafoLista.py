@@ -7,8 +7,6 @@ NOME: Thiago Shihan Cardoso Toma
 RA: 10400764
 """
 
-import csv
-
 class Genero:
     """Classe base para vértices."""
     def __init__(self, nome):
@@ -27,9 +25,8 @@ class Usuario:
 
 class Musica:
     """Classe para vértices do tipo Música."""
-    def __init__(self, nome, generos):
+    def __init__(self, nome):
         self.nome = nome
-        self.generos = generos  # Suporte a múltiplos gêneros
 
     def __str__(self):
         return self.nome
@@ -39,7 +36,7 @@ class Grafo:
         self.adj = {}  # Dicionário de conjuntos de adjacência
 
     def adiciona_vertice(self, vertice):
-        if vertice not in self.adj:
+        if vertice.nome not in self.adj:
             self.adj[vertice] = set()
 
     def insereA(self, v, w):
