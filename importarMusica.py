@@ -1,14 +1,19 @@
+"""
+NOME: Erik Samuel Viana Hsu
+RA: 10403109
+NOME: Mateus Kenzo Iochimoto
+RA: 10400995
+NOME: Thiago Shihan Cardoso Toma
+RA: 10400764
+"""
+
 import os
 from dotenv import load_dotenv, dotenv_values
-import pandas as pd
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+# Carrega o .env e faz autenticação com o Spotify
 load_dotenv()
-# Autenticação
-
-
-# Autenticação com o Spotify
 auth_manager = SpotifyClientCredentials(client_id=os.getenv("client_id"), client_secret=os.getenv("client_secret"))
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
@@ -27,12 +32,12 @@ def buscar_info_artista_por_musica(nome_musica):
         # Informações do primeiro artista
         info_artista = {
             "musica": nome_musica,
-            "artista": artista_nome,
+            #"artista": artista_nome,
             #"seguidores": artista_info['followers']['total'],
             #"popularidade": artista_info['popularity'],
             "generos": ', '.join(artista_info['genres']),  # Convertendo lista de gêneros em string
             #"url_spotify": artista_info['external_urls']['spotify'],
-            "aparicoes": 1  # Coluna 'aparicoes' criada e inicializada como 1
+            #"aparicoes": 1  # Coluna 'aparicoes' criada e inicializada como 1
         }
 
         return info_artista
