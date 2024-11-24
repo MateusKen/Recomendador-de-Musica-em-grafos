@@ -7,6 +7,9 @@ RA: 10400995
 NOME: Thiago Shihan Cardoso Toma
 RA: 10400764
 
+**Link Youtube**
+https://www.youtube.com/watch?v=VrdUdeRjdpg
+
 🎵 **Recomendador de Músicas com Grafo  🎶**
 
 Este é um projeto desenvolvido para a disciplina de Teoria dos Grafos com o objetivo de explorar a utilização de grafos na criação de um sistema de recomendação de músicas.
