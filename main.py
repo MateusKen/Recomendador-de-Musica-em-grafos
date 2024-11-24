@@ -23,7 +23,38 @@ generos = {}
 # Dicionário para associar usuários aos seus vértices
 usuarios = {}
 
+def calcular_centralidade_grau(grafo):
+    """
+    Calcula e ranqueia a centralidade de grau para todos os vértices em um grafo.
+
+    Parâmetros:
+    - grafo (Grafo): Grafo no qual a centralidade de grau será calculada.
+
+    Retorna:
+    - list: Uma lista de tuplas contendo os vértices e seus graus de centralidade,
+            ordenados do maior para o menor.
+    """
+    # Dicionário para armazenar o grau de centralidade de cada vértice
+    centralidade = {}
+
+    # Itera sobre os vértices do grafo
+    for vertice, adjacencias in grafo.adj.items():
+        # O grau de centralidade é igual ao número de conexões do vértice
+        centralidade[vertice] = len(adjacencias)
+
+    # Ordenar os vértices por grau de centralidade em ordem decrescente
+    centralidade_ordenada = sorted(centralidade.items(), key=lambda x: x[1], reverse=True)
+
+    return centralidade_ordenada
+
 def verifica_duplicatas(nome, lista):
+    """
+    Recebe um item e determina se ele existe em lista
+
+    Parâmetros:
+    - nome (str): item a ser verificado
+    - lista (str[]): lugar para procurar
+    """
     return nome in lista
 
 def ler_forms(arquivo):
@@ -84,6 +115,17 @@ def ler_forms(arquivo):
     df_final.to_csv("musicas_info.csv", index=False)
 
 def procura_em_adj(obj, grafo, tipo):
+    """
+    Retorna todos os itens relaciodos a um objeto de acordo com um tipo
+
+    Parâmetros:
+    - obj (tipo): coisa a ser procurada
+    - grafo (Grafo): O grafo contendo usuários, músicas e gêneros.
+    - tipo (Type): a tipagem usada
+
+    Retorna:
+    - list: Lista de coisas desse tipo
+    """
     lista = []
     for node in grafo.adj[obj]:
         if isinstance(node , tipo):
@@ -213,47 +255,109 @@ def mapear_generos(generos_musica):
     return ", ".join(sorted(generos_mapeados)) if generos_mapeados else "N/A"
 
 def carregar_grafo(caminho_formulario, caminho_musicas):
+    """
+    Cria um grafo a partir dos dados de usuários, músicas e gêneros presentes em arquivos CSV.
+
+    - Cada música é conectada aos seus gêneros.
+    - Cada usuário é conectado às músicas que marcou no formulário.
+
+    Parâmetros:
+    - caminho_formulario (str): Caminho para o CSV com as respostas dos usuários.
+    - caminho_musicas (str): Caminho para o CSV com informações de músicas e seus gêneros.
+
+    Retorna:
+    - Grafo: Um grafo contendo vértices para usuários, músicas e gêneros, com arestas representando as conexões.
+
+    Exemplo de Grafo Criado:
+    - Vértices:
+      * Usuários: "João", "Maria", etc.
+      * Músicas: "Hotel California", "Shape of You", etc.
+      * Gêneros: "Rock", "Pop", etc.
+    - Arestas:
+      * Usuário → Música: "João" → "Hotel California".
+      * Música → Gênero: "Hotel California" → "Rock".
+    """
     grafo = Grafo()
 
     # Carregar as informações de músicas e gêneros
     with open(caminho_musicas, newline='', encoding='utf-8') as file_musicas:
         reader = csv.DictReader(file_musicas)
         for linha in reader:
-            nome_musica = linha['musica'].strip() #string
-            lista_generos = linha['generos'].split(";") #lista
+            # Padronizar nome da música
+            nome_musica = linha['musica'].strip().lower()  # Tornar nome consistente (ex.: minúsculas)
+            lista_generos = [genero.strip().lower() for genero in linha['generos'].split(";")]  # Padronizar gêneros
+
             # Criar vértice da música
-            musica_vertice = Musica(nome_musica) #objeto musica
-            musicas[nome_musica] = musica_vertice #adiciona ao dicionario referencia ao objeto
-            grafo.adiciona_vertice(musica_vertice) #cria um vertice no grafo com o nome
-            
+            if nome_musica not in musicas:
+                musica_vertice = Musica(nome_musica)
+                musicas[nome_musica] = musica_vertice
+                grafo.adiciona_vertice(musica_vertice)
+            else:
+                musica_vertice = musicas[nome_musica]
+
             # Criar vértices para os gêneros, se ainda não existirem
             for genero in lista_generos:
                 if genero not in generos:
-                    genero_vertice = Genero(genero) #objeto genero
-                    generos[genero] = genero_vertice #adiciona ao dicionario referencia ao objeto
+                    genero_vertice = Genero(genero)
+                    generos[genero] = genero_vertice
                     grafo.adiciona_vertice(genero_vertice)
-                
-                # Conectar música ao gênero
-                grafo.insereA(musica_vertice, genero_vertice)
+                else:
+                    genero_vertice = generos[genero]
+
+                # Conectar música ao gênero (evitar conexões duplicadas)
+                if genero_vertice not in grafo.adj[musica_vertice]:
+                    grafo.insereA(musica_vertice, genero_vertice)
 
     # Carregar as informações dos usuários e suas respostas
     with open(caminho_formulario, newline='', encoding='utf-8') as file_formulario:
         reader = csv.DictReader(file_formulario)
         for row in reader:
-            # Criar vértice do usuário
-            usuario_vertice = Usuario(row['nome']) #objeto usuario
-            usuarios[row['nome']] = usuario_vertice #adiciona usuario ao dicionario
-            grafo.adiciona_vertice(usuario_vertice)
+            # Padronizar nome do usuário
+            nome_usuario = row['nome'].strip().lower()  # Tornar consistente
+            if nome_usuario not in usuarios:
+                usuario_vertice = Usuario(nome_usuario)
+                usuarios[nome_usuario] = usuario_vertice
+                grafo.adiciona_vertice(usuario_vertice)
+            else:
+                usuario_vertice = usuarios[nome_usuario]
 
             # Conectar o usuário às músicas que ele marcou
-            musicas_marcadas = row['musica'].split(';')
+            musicas_marcadas = [musica.strip().lower() for musica in row['musica'].split(';')]
             for musica_nome in musicas_marcadas:
-                musica_nome = musica_nome.strip()
-                grafo.insereA(usuario_vertice, musicas[musica_nome])
+                if musica_nome in musicas:
+                    musica_vertice = musicas[musica_nome]
+                    if musica_vertice not in grafo.adj[usuario_vertice]:
+                        grafo.insereA(usuario_vertice, musica_vertice)
+                else:
+                    print(f"Erro: Música '{musica_nome}' não encontrada no arquivo de músicas!")
 
     return grafo
 
 def mostra_arquivo(arquivo):
+    """
+    Lê e exibe o conteúdo de um arquivo CSV no console.
+
+    Parâmetros:
+    - arquivo (str): Caminho para o arquivo CSV a ser exibido.
+
+    Comportamento:
+    - Lê o arquivo linha por linha e exibe cada linha formatada como uma string separada por vírgulas.
+    - Trata erros caso o arquivo não seja encontrado ou ocorra algum outro problema durante a leitura.
+
+    Exemplo:
+    Se o conteúdo do arquivo for:
+    ```
+    nome,idade,gênero
+    João,25,Masculino
+    Maria,30,Feminino
+    ```
+    A saída será:
+    ```
+    nome, idade, gênero
+    João, 25, Masculino
+    Maria, 30, Feminino
+    ```
+    """
     try:
         with open(arquivo, mode='r', encoding='utf-8') as file:
             reader = csv.reader(file)
@@ -266,10 +370,33 @@ def mostra_arquivo(arquivo):
     except Exception as e:
         print(f"Erro ao ler o arquivo '{arquivo}': {e}")
 
-def deletar_grafo(grafo):
-    grafo = None
-
 def gravar_grafo(grafo, arquivo):
+    """
+    Grava a estrutura de um grafo em um arquivo CSV.
+
+    Parâmetros:
+    - grafo (Grafo): O grafo cuja estrutura será salva.
+    - arquivo (str): Caminho do arquivo CSV onde os dados serão armazenados.
+
+    Comportamento:
+    - Cria ou sobrescreve um arquivo CSV com informações sobre os vértices do grafo, seu tipo e suas conexões.
+    - Cada linha no arquivo CSV representa um vértice, incluindo:
+        - O nome do vértice.
+        - O tipo do vértice (Usuário, Música, ou Gênero).
+        - As conexões (arestas) do vértice, separadas por vírgulas.
+
+    Exemplo de saída no arquivo CSV:
+    ```
+    Vértice,Tipo,Arestas
+    João,Usuário,Imagine, Let it Be
+    Imagine,Música,João, Gênero:Rock
+    Let it Be,Música,João, Gênero:Pop
+    ```
+
+    Exceções:
+    - Certifique-se de que o grafo esteja corretamente configurado para evitar problemas durante a gravação.
+
+    """
     with open(arquivo, mode='w', newline='', encoding='utf-8') as arquivo_csv:
         writer = csv.writer(arquivo_csv)
         
@@ -299,7 +426,8 @@ def menu():
         print("\nMenu de opções: ")
         print("a1. Le o arquivo do forms (faz chamada na API)")#👍
         print("a2. Recomendar musica por similaridade")#👍
-        print("a3. Recomendar musica por genero")#👍
+        print("a3. Recomendar musica por genero")
+        print("a4. Mostra o grau de centralidade dos vértices")
         print("a. Ler dados do arquivo e criar grafo")#👍
         print("b. Gravar dados no arquivo")#👍
         print("c. Inserir vértice")#👍
@@ -332,10 +460,15 @@ def menu():
             else:
                 print(f"Não deu para achar nenhuma recomendação para {nome}")
 
+        elif opcao == "a4":
+            print("Ranking de Centralidade de Grau:")
+            for rank, (vertice, grau) in enumerate(calcular_centralidade_grau(grafo), start=1):
+                print(f"{rank}. {vertice} - Centralidade: {grau}")
+
         elif opcao == "a":
             grafo = carregar_grafo("forms.csv", "musicas_info.csv")
             print("Grafo criado!")
-        
+
         elif opcao == "b":
             if grafo:
                 gravar_grafo(grafo, "forms1.csv")
@@ -372,7 +505,7 @@ def menu():
                     newUsuario = input("\nDigite o nome do usuario a ser inserido: ")
                     usuario_vertice = Usuario(newUsuario)
                     usuarios[newUsuario] = usuario_vertice
-                    grafo.adiciona_vertice(usuario_vertice.nome)
+                    grafo.adiciona_vertice(usuario_vertice)
                 else:
                     print("Opcao nao identificada")
             else:
@@ -430,4 +563,3 @@ def menu():
             print("Opção inválida.")
 
 menu()
-print("FOI!")
