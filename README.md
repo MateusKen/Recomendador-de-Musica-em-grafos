@@ -1,18 +1,8 @@
-NOME: Erik Samuel Viana Hsu
-RA: 10403109 
+# Recomendador de Músicas com Grafos
 
-NOME: Mateus Kenzo Iochimoto
-RA: 10400995
+Sistema de recomendação de músicas que modela usuários e músicas como um grafo e sugere faixas novas a partir das conexões entre eles. Os dados das músicas vêm da API do Spotify.
 
-NOME: Thiago Shihan Cardoso Toma
-RA: 10400764
-
-**Link Youtube**
-
-https://www.youtube.com/watch?v=VrdUdeRjdpg
-
-
-🎵 **Recomendador de Músicas com Grafo  🎶**
+[Vídeo de apresentação](https://www.youtube.com/watch?v=VrdUdeRjdpg)
 
 Este é um projeto desenvolvido para a disciplina de Teoria dos Grafos com o objetivo de explorar a utilização de grafos na criação de um sistema de recomendação de músicas.
 
@@ -57,3 +47,8 @@ Depois de ter isso criado só precisa criar um .env na pasta
 para instalar as dependências do projeto, baixe o arquivo "requirements.txt" e use o comando
 
 **pip install -r requirements.txt**
+
+## Autores
+
+Erik Samuel Viana Hsu, Mateus Kenzo Iochimoto e Thiago Shihan Cardoso Toma.
+Projeto final de Teoria dos Grafos, Ciência da Computação, Universidade Presbiteriana Mackenzie.
